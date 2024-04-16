@@ -43,7 +43,7 @@ def generate_interactive(
     inputs = tokenizer([prompt], padding=True, return_tensors='pt')
     input_length = len(inputs['input_ids'][0])
     for k, v in inputs.items():
-        inputs[k] = v.cuda()
+        inputs[k] = v
     input_ids = inputs['input_ids']
     _, input_ids_seq_length = input_ids.shape[0], input_ids.shape[-1]
     if generation_config is None:
@@ -174,7 +174,7 @@ def load_model():
     
     model = (AutoModelForCausalLM.from_pretrained(base_path,
                                                   trust_remote_code=True).to(
-                                                      torch.bfloat16).cuda())
+                                                      torch.bfloat16))
     tokenizer = AutoTokenizer.from_pretrained(base_path,
                                               trust_remote_code=True)
     return model, tokenizer
@@ -269,7 +269,7 @@ def main():
             'role': 'robot',
             'content': cur_response,  # pylint: disable=undefined-loop-variable
         })
-        torch.cuda.empty_cache()
+        #torch.cuda.empty_cache()
 
 
 if __name__ == '__main__':
